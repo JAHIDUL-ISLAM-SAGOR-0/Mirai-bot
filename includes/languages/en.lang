@@ -1,0 +1,94 @@
+# SaGor.js 
+
+mirai.errorFormat=「 ᴍᴀʟғᴏʀᴍᴇᴅ ᴍᴏᴅᴜʟᴇ! 」
+mirai.nameExist=「 ᴍᴏᴅᴜʟᴇ's ɴᴀᴍᴇ ɪs sɪᴍɪʟᴀʀ ᴛᴏ ᴀɴᴏᴛʜᴇʀ ᴍᴏᴅᴜʟᴇ! 」
+mirai.notFoundLanguage=「 ᴍᴏᴅᴜʟᴇ %1 ᴅᴏɴ'ᴛ sᴜᴘᴘᴏʀᴛ ʏᴏᴜʀ ʟᴀɴɢᴜᴀɢᴇ 」
+mirai.notFoundPackage=「 ᴄᴀɴ'ᴛ ғɪɴᴅ ᴘᴀᴄᴋᴀɢᴇ 「 %1 」 sᴜᴘᴘᴏʀᴛ ғᴏʀ ᴍᴏᴅᴜʟᴇ 「 %2 」 ɪɴsᴛᴀʟʟɪɴɢ... 」
+mirai.cantInstallPackage=「 ᴄᴀɴ'ᴛ ɪɴsᴛᴀʟʟ ᴘᴀᴄᴋᴀɢᴇ %1 ғᴏʀ ᴍᴏᴅᴜʟᴇ %2, ᴇʀʀᴏʀ: %3 」
+mirai.loadedPackage=「 ɪɴsᴛᴀʟʟᴇᴅ ᴡʜᴏʟᴇ ᴘᴀᴄᴋᴀɢᴇ sᴜᴄᴄᴇssғᴜʟʟʏ ғᴏʀ ᴍᴏᴅᴜʟᴇ %1 」
+mirai.loadedConfig=「 ɪɴsᴛᴀʟʟᴇᴅ ᴄᴏɴғɪɢ sᴜᴄᴄᴇssғᴜʟʟʏ ғᴏʀ ᴍᴏᴅᴜʟᴇ %1 」
+mirai.cantLoadConfig=「 ᴄᴀɴ'ᴛ ɪɴsᴛᴀʟʟ ᴄᴏɴғɪɢ ᴏғ ᴍᴏᴅᴜʟᴇ「 %1 」, ᴇʀʀᴏʀ:「 %2 」
+mirai.cantOnload=「 ᴄᴀɴ'ᴛ ʟᴀᴜɴᴄʜ sᴇᴛᴜᴘ ᴏғ ᴍᴏᴅᴜʟᴇ「 %1 」, ᴇʀʀᴏʀ:「 %1 」
+mirai.successLoadModule=「 sᴜᴄᴄᴇssғᴜʟʟʏ ɪɴsᴛᴀʟʟᴇᴅ ᴍᴏᴅᴜʟᴇ %1 」
+mirai.failLoadModule=「 ᴄᴀɴ'ᴛ ɪɴsᴛᴀʟʟ ᴍᴏᴅᴜʟᴇ「 %1 」, ᴇʀʀᴏʀ:「 %2 」
+mirai.finishLoadModule=「 ɪɴsᴛᴀʟʟᴇᴅ「 %1 」ᴍᴏᴅᴜʟᴇ ᴄᴏᴍᴍᴀɴᴅs ᴀɴᴅ「 %2 」ᴍᴏᴅᴜʟᴇ ᴇᴠᴇɴᴛs sᴜᴄᴄᴇssғᴜʟʟʏ 」 
+mirai.foundPathAppstate=「 ғᴏᴜɴᴅ ғɪʟᴇ ᴀᴘᴘsᴛᴀᴛᴇ 」
+mirai.notFoundPathAppstate=「 ᴄᴀɴ'ᴛ ғɪɴᴅ ғɪʟᴇ ᴀᴘᴘsᴛᴀᴛᴇ 」
+mirai.checkListGban=「 ᴄʜᴇᴋɪɴɢ ɢʟᴏʙᴀʟ ʙᴀɴ ʟɪsᴛ... 」
+mirai.banDevice=「 ʏᴏᴜʀ ᴅᴇᴠɪᴄᴇ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ғʀᴏᴍ ᴍɪʀᴀɪᴘʀᴏᴊᴇᴄᴛ, ᴘʟᴇᴀsᴇ ᴄᴏɴᴛᴀᴄᴛ ᴛᴏ ғᴀᴄᴇʙᴏᴏᴋ fb.com/SAGOR.69x ᴛᴏ ᴋɴᴏᴡ ᴍᴏʀᴇ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴏʀ ᴀsᴋɪɴɢ ғᴏʀ ᴜɴʙᴀɴ ᴋᴇʏ, ɪғ ʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ʜᴀᴠᴇ ᴜɴʙᴀɴ ᴋᴇʏ, ᴘʟᴇᴀsᴇ ғɪʟʟ ɪᴛ ʙᴇʟᴏᴡ. 」
+mirai.keyNotSameFormat=「 ᴡʀᴏɴɢ ғᴏʀᴍᴀᴛ, ᴄᴏᴅᴇ ᴍᴜsᴛ ᴄᴏɴᴛᴀɪɴ「 %6 」ɴᴜᴍʙᴇʀ. 」
+mirai.codeInputExpired=「 ʏᴏᴜʀ ᴄᴏᴅᴇ ɪs ᴡʀᴏɴɢ ᴏʀ ᴏᴜᴛ ᴏғ ᴅᴀᴛᴇ. 」
+mirai.unbanDeviceSuccess=「 ʏᴏᴜʀ ᴅᴇᴠɪᴄᴇ ᴀʀᴇ ᴜɴʙᴀɴ ɴᴏᴡ, ᴘʟᴇᴀsᴇ ʀᴇsᴛᴀʀᴛ ᴛᴏ ᴜsᴇ.
+ᴍɪʀᴀɪ.ᴜsᴇʀʙᴀɴɴᴇᴅ=ʏᴏᴜ ʜᴀᴅ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ғʀᴏᴍ ᴍɪʀᴀɪᴘʀᴏᴊᴇᴄᴛ ᴡʜᴇɴ「 %1 」ᴡɪᴛʜ ʀᴇᴀsᴏɴ:「 %2」. ᴘʟᴇᴀsᴇ ᴄᴏɴᴛᴀᴄᴛ ᴛᴏ ғᴀᴄᴇʙᴏᴏᴋ fb.com/SAGOR.69x ᴛᴏ ʜᴀᴠᴇ ᴍᴏʀᴇ ɪɴғᴏʀᴍᴀᴛɪᴏɴ! 」
+mirai.finishCheckListGban=「 ᴄʜᴇᴄᴋᴇᴅ ɢʟᴏʙᴀʟ ʙᴀɴ ʟɪsᴛ 」
+mirai.handleListenError=「 ʜᴀɴᴅʟᴇʟɪsᴛᴇɴᴇ ʜᴀs ᴏᴄᴄᴜʀʀᴇᴅ sᴏᴍᴇ ᴜɴᴇxᴘᴇᴄᴛᴇᴅ ᴇʀʀᴏʀʀ, ᴇʀʀᴏʀ :「 %1 」
+mirai.warningSourceCode=「 ᴅᴇᴛᴇᴄᴛᴇᴅ ᴛʜᴀᴛ sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ's sᴛʀᴜᴄᴛᴜʀᴇ ʜᴀᴅ ʙᴇᴇɴ ᴄʜᴀɴɢᴇᴅ , sᴛᴏᴘ ɴᴏᴡ! 」
+mirai.refreshListen=「 ʀᴇғʀᴇsʜᴇᴅ ʜᴀɴᴅʟᴇʟɪsᴛᴇɴᴇʀ... 」
+mirai.successConnectDatabase=「 ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴛᴏ ᴅᴀᴛᴀʙᴀsᴇ sᴜᴄᴄᴇssғᴜʟʟʏ! 」
+mirai.failConnectDatabase=「 ғᴀɪʟᴇᴅ ᴛᴏ ᴄᴏɴɴᴇᴄᴛ ᴛᴏ ᴅᴀᴛᴀʙᴀsᴇ, ᴇʀʀᴏʀ:「 %1 」
+
+# includes/listen.js
+
+listen.startLoadEnvironment=「 ᴘʀᴏᴄᴇᴇᴅ ᴛᴏ ʟᴏᴀᴅ ᴛʜᴇ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ ... 」
+listen.loadedEnvironmentThread=「 ʟᴏᴀᴅᴇᴅ ᴛʜʀᴇᴀᴅ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ sᴜᴄᴄᴇssғᴜʟʟʏ 」 
+listen.loadedEnvironmentUser=「 ʟᴏᴀᴅᴇᴅ ᴜsᴇʀ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ sᴜᴄᴄᴇssғᴜʟʟʏ 」 
+listen.successLoadEnvironment=「 ʟᴏᴀᴅᴇᴅ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ sᴜᴄᴄᴇssғᴜʟʟʏ 」 
+listen.failLoadEnvironment=「 ᴄᴀɴ'ᴛ ʟᴏᴀᴅ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ, ᴇʀʀᴏʀ: 「 %1 」
+
+# includes/controller/currencies.js
+
+currencies.needObjectOrArray=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴀʀʀᴀʏ ᴏʀ ᴀɴ ᴏʙᴊᴇᴄᴛ ᴏʀ ᴍᴀʏʙᴇ ʙᴏᴛʜ 」
+handleCommand.userBanned=「 ʏᴏᴜʀ ᴀʀᴇ ɴᴏᴛ ᴜᴇs ʙᴏᴛ ʏᴏᴜ ᴀʀᴇ ʙᴀɴ! 」
+handleCommand.threadBanned=「 ɢʀᴏᴜᴘ ʜᴀs ʙᴇᴇɴ ʙᴀɴɴᴇᴅ..! 」
+handleCommand.onlyprefix=「 ʜᴇʏ ɪ'ᴍ ʜᴇʀᴇ 」
+handleCommand.noprefix=「 ʜᴇʏ ɪ'ᴍ ʜᴇʀᴇ 」
+handleCommand.commandNotExist=「 ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪs ᴅᴏᴇsɴ'ᴛ ᴇxɪsᴛ ʜᴇʀᴇ. ᴡᴇʀᴇ ʏᴏᴜ ᴛʏɪɴɢ ᴛᴏ ᴜsᴇ 」\n\nᴅɪᴅ ʏᴏᴜ ᴍᴇᴀɴ: 「 %1 」
+handleCommand.commandNotFound=「 ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪs ᴅᴏᴇsɴ'ᴛ ᴇxɪsᴛ ʜᴇʀᴇ. ᴡᴇʀᴇ ʏᴏᴜ ᴛʏɪɴɢ ᴛᴏ ᴜsᴇ 」\n\nᴅɪᴅ ʏᴏᴜ ᴍᴇᴀɴ: 「 %1 」
+handleCommand.commandUserBanned=「 ʏᴏᴜ ᴀʀᴇ ᴜɴᴀʙʟᴇ ᴛᴏ ᴜsᴇ ᴄᴏᴍᴍᴀɴᴅ \n「 %1 」
+handleCommand.commandThreadBanned=「 ᴛʜɪs ɢʀᴏᴜᴘ ɪs ᴜɴᴀʙʟᴇ ᴛᴏ ᴜsᴇ ᴄᴏᴍᴍᴀɴᴅ \n「 %1 」
+handleCommand.threadNotAllowNSFW=「 ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ғᴏʀ ᴏᴡɴᴇʀ 」
+handleCommand.cantGetInfoThread=「 ᴄᴀɴ'ᴛ ɢᴇᴛ ʏᴏᴜʀ ᴛʜʀᴇᴀᴅ's ɪɴғᴏ, ᴇʀʀᴏʀ: \n「 %1 」
+handleCommand.permssionNotEnough=「 "%1" 」\n「 ᴏɴᴇʟʏ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ 」
+handleCommand.cantSetMessageReaction=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴜɴᴇxᴘᴇᴄᴛᴇᴅ ᴇʀʀᴏʀ ᴀᴛ sᴇᴛᴍᴇssᴀɢᴇʀᴇᴀᴄᴛɪᴏɴ, ᴇʀʀᴏʀ: 「 %1 」
+handleCommand.executeCommand=「 [ %1 ]\n ᴄᴏᴍᴍᴀɴᴅ ᴜsᴇᴅ:「 %2 」ʙʏ ᴜsᴇʀ:「 %3 」ᴀᴛ ᴛʜʀᴇᴀᴅ:「 %4 」| ᴀʀɢs ɪɴᴄʟᴜᴅᴇᴅ:「 %5 」| ᴘʀᴏᴄᴇssɪɴɢ ᴛɪᴍᴇ: 「 %6ᴍs 」
+handleCommand.commandError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴜɴᴇxᴘᴇᴄᴛᴇᴅ ᴇʀʀᴏʀ ᴡʜᴇɴ ᴜsɪɴɢ ᴄᴏᴍᴍᴀɴᴅ 「 %1 」, ᴇʀʀᴏʀ: 「 %2 」
+
+# includes/handle/handleCommandEvent.js
+
+handleCommandEvent.moduleError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴜɴᴇxᴘᴇᴄᴛᴇᴅ ᴇʀʀᴏʀ ᴡʜᴇɴ ᴜsɪɴɢ ᴄᴏᴍᴍᴀɴᴅ 「 %1 」, ᴇʀʀᴏʀ: 「 %2 」
+
+# includes/handle/handleCreateDatabase.js
+
+handleCreateDatabase.newThread=「 ɴᴇᴡ ᴛʜʀᴇᴀᴅ:「 %1 」
+handleCreateDatabase.newUser=「 ɴᴇᴡ ᴜsᴇʀ「 %1 」
+
+# includes/handle/handleEvent.js
+
+handleEvent.executeEvent=「 [ %1 ] ᴇᴠᴇɴᴛ ᴡᴀs ᴇxᴇᴄᴜᴛᴇᴅ:「 %2 」ᴀᴛ ᴛʜʀᴇᴀᴅ:「 %3 」| ᴘʀᴏᴄᴇssɪɴɢ ᴛɪᴍᴇ:「 %4 ᴍs 」
+handleEvent.eventError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴇʀʀᴏʀ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴇᴠᴇɴᴛ「 %1 」, ᴇʀʀᴏʀ:「 %2 」
+
+# includes/handle/handleReaction.js
+
+handleReaction.missingValue=「 ᴍɪssɪɴɢ ᴠᴀʟᴜᴇ ᴛᴏ ʀᴇsᴘᴏɴᴅ ʏᴏᴜʀ ᴘʀᴏʙʟᴇᴍ 」
+handleReaction.executeError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴇʀʀᴏʀ ᴡʜᴇɴ ʀᴇsᴘᴏɴᴅɪɴɢ ʏᴏᴜʀ ᴘʀᴏʙʟᴇᴍ, ᴇʀʀᴏʀ:「 %1 」
+
+# includes/handle/handleReply.js
+
+handleReply.missingValue=「 ᴍɪssɪɴɢ ᴠᴀʟᴜᴇ ᴛᴏ ʀᴇsᴘᴏɴᴅ ʏᴏᴜʀ ᴘʀᴏʙʟᴇᴍ 」
+handleReply.executeError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴇʀʀᴏʀ ᴡʜᴇɴ ʀᴇsᴘᴏɴᴅɪɴɢ ʏᴏᴜʀ ᴘʀᴏʙʟᴇᴍ, ᴇʀʀᴏʀ:「 %1 」
+
+# includes/handle/handleSchedule.js
+
+handleSchedule.exectuteError=「 ʜᴀᴠɪɴɢ sᴏᴍᴇ ᴇʀʀᴏʀ ᴡʜᴇɴ sᴄʜᴇᴅᴜʟᴇ ᴀᴛ ᴍᴏᴅᴜʟᴇ「 %1 」, ᴇʀʀᴏʀ:「 %2 」
+
+# utils/index.js
+
+utils.throwError=「 [!] ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ɪs ɴᴏᴛ sʏɴᴛᴀx ᴄᴏʀʀᴇᴄᴛ, ᴘʟᴇᴀsᴇ ᴜsᴇ「 %1 」ʜᴇʟᴘ「 %2 」ғᴏʀ ᴍᴏʀᴇ ᴜsᴀɢᴇ ᴅᴇᴛᴀɪʟs 」
+
+# Missing controller language keys
+users.needObjectOrArray=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴀʀʀᴀʏ ᴏʀ ᴀɴ ᴏʙᴊᴇᴄᴛ ᴏʀ ᴍᴀʏʙᴇ ʙᴏᴛʜ 」
+users.needObject=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴏʙᴊᴇᴄᴛ 」
+threads.needObjectOrArray=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴀʀʀᴀʏ ᴏʀ ᴀɴ ᴏʙᴊᴇᴄᴛ ᴏʀ ᴍᴀʏʙᴇ ʙᴏᴛʜ 」
+threads.needObject=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴏʙᴊᴇᴄᴛ 」
+currencies.needObject=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀɴ ᴏʙᴊᴇᴄᴛ 」
+currencies.needNumber=「 ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴀ ɴᴜᴍʙᴇʀ 」

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: sagor-bot
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RENDER_EXTERNAL_URL
+        fromService:
+          name: sagor-bot
+          type: web
+          property: host

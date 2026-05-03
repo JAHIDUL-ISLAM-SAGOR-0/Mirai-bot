@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAGOR BOT — Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --card: #161616;
+    --border: #2a2a2a;
+    --cyan: #00e5ff;
+    --green: #69ff47;
+    --orange: #ffab40;
+    --red: #ff5252;
+    --purple: #ce93d8;
+    --text: #e0e0e0;
+    --muted: #777;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px;
+  }
+
+  /* ── Top Profile Card ───────────────────────────── */
+  .profile-card {
+    background: linear-gradient(145deg, var(--card), #1e1e1e);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 30px 24px 24px;
+    box-shadow: 0 0 30px rgba(0,229,255,0.08);
+    margin-bottom: 24px;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .profile-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0,229,255,0.18);
+  }
+  .avatar {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--cyan);
+    margin-bottom: 12px;
+    transition: transform .3s;
+  }
+  .profile-card:hover .avatar { transform: scale(1.08); }
+  .name { font-size: 20px; color: var(--cyan); font-weight: 700; margin-bottom: 4px; }
+  .role { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+  .social-links { display: flex; justify-content: center; gap: 10px; }
+  .social-links a {
+    color: #fff; width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 16px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .social-links a:hover { transform: scale(1.2); box-shadow: 0 0 12px var(--cyan); }
+  .facebook  { background: #3b5998; }
+  .tiktok    { background: #111; border: 1px solid #333; }
+  .telegram  { background: #0088cc; }
+  .whatsapp  { background: #25D366; }
+  .github    { background: #24292e; }
+
+  /* ── Status Grid ────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    width: 100%;
+    max-width: 860px;
+    margin-bottom: 24px;
+  }
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    transition: border-color .2s;
+  }
+  .stat-box:hover { border-color: var(--cyan); }
+  .stat-box .icon { font-size: 22px; margin-bottom: 8px; }
+  .stat-box .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .stat-box .value { font-size: 22px; font-weight: 700; color: var(--text); }
+  .stat-box .value.ok    { color: var(--green); }
+  .stat-box .value.warn  { color: var(--orange); }
+  .stat-box .value.error { color: var(--red); }
+
+  /* ── Canvas / Log Section ───────────────────────── */
+  .log-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 860px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .log-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .log-header h2 { font-size: 14px; color: var(--cyan); letter-spacing: 1px; }
+  .refresh-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer;
+    transition: all .2s;
+  }
+  .refresh-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* Canvas */
+  #uptimeChart {
+    width: 100% !important;
+    height: 160px !important;
+    border-radius: 10px;
+    background: #0a0a0a;
+  }
+
+  /* Status indicator dot */
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; animation: pulse 1.6s infinite; }
+  .dot.green  { background: var(--green);  box-shadow: 0 0 6px var(--green); }
+  .dot.red    { background: var(--red);    box-shadow: 0 0 6px var(--red); animation: none; }
+  .dot.orange { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .status-row {
+    display: flex; align-items: center; font-size: 13px; color: var(--muted);
+  }
+
+  /* Footer */
+  footer { font-size: 11px; color: #333; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ── Profile Card ── -->
+<div class="profile-card">
+  <img src="https://i.ibb.co.com/6JPqxzwK/65ce49408be82ad3f336bf32d4d69bd3.jpg" alt="Avatar" class="avatar" onerror="this.src='https://i.imgur.com/HeIi0wU.png'">
+  <div class="name">JAHIDUL ISLAM SAGOR</div>
+  <div class="role">Bot Creator • SAGOR-V3</div>
+  <div class="social-links">
+    <a href="https://facebook.com/SAGOR.69x"   target="_blank" class="facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://tiktok.com/@11sagor_islam" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://telegram.me/@xxSaGorxx"   target="_blank" class="telegram"><i class="fab fa-telegram-plane"></i></a>
+    <a href="https://wa.me/+8801611079915"      target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://github.com/SAGOR-KINGx"   target="_blank" class="github"><i class="fab fa-github"></i></a>
+  </div>
+</div>
+
+<!-- ── Stats Grid ── -->
+<div class="grid" id="statsGrid">
+  <div class="stat-box">
+    <div class="icon">🤖</div>
+    <div class="label">Bot Status</div>
+    <div class="value" id="statusVal">—</div>
+  </div>
+  <div class="stat-box">
+    <div class="icon">⏱️</div>
+    <div class="label">Uptime</div>
+    <div class="value" id="uptimeVal">—</div>
+  </div>
+  <div class="stat-box">
+    <div class="icon">🔄</div>
+    <div class="label">Restarts</div>
+    <div class="value" id="restartVal">—</div>
+  </div>
+  <div class="stat-box">
+    <div class="icon">💓</div>
+    <div class="label">Heartbeat</div>
+    <div class="value" id="hbVal">—</div>
+  </div>
+</div>
+
+<!-- ── Uptime Canvas Chart ── -->
+<div class="log-container">
+  <div class="log-header">
+    <h2>📊 UPTIME HISTORY (last 20 polls)</h2>
+    <div class="status-row">
+      <span class="dot green" id="liveDot"></span>
+      <span id="liveLabel">Connecting...</span>
+    </div>
+    <button class="refresh-btn" onclick="fetchHealth()">↻ Refresh</button>
+  </div>
+  <canvas id="uptimeChart"></canvas>
+</div>
+
+<footer>SAGOR BOT v1.2.14 — Auto-refreshes every 30s</footer>
+
+<script>
+/* ── canvas chart ── */
+const canvas  = document.getElementById('uptimeChart');
+const ctx     = canvas.getContext('2d');
+const history = [];
+const MAX_PTS = 20;
+
+function resizeCanvas() {
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight || 160;
+}
+window.addEventListener('resize', () => { resizeCanvas(); drawChart(); });
+resizeCanvas();
+
+function drawChart() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  if (history.length < 2) {
+    ctx.fillStyle = '#333';
+    ctx.font = '13px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Collecting data...', W / 2, H / 2);
+    return;
+  }
+
+  const pad = { t: 16, b: 30, l: 40, r: 16 };
+  const cW = W - pad.l - pad.r;
+  const cH = H - pad.t - pad.b;
+
+  // Grid lines
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (cH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+  }
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + cH);
+  grad.addColorStop(0, 'rgba(0,229,255,0.25)');
+  grad.addColorStop(1, 'rgba(0,229,255,0)');
+
+  const maxU = Math.max(...history.map(h => h.uptime), 60);
+  const xStep = cW / (MAX_PTS - 1);
+
+  function xOf(i) { return pad.l + i * xStep; }
+  function yOf(v) { return pad.t + cH - (v / maxU) * cH; }
+
+  // Fill area
+  ctx.beginPath();
+  ctx.moveTo(xOf(0), yOf(history[0].uptime));
+  for (let i = 1; i < history.length; i++) ctx.lineTo(xOf(i), yOf(history[i].uptime));
+  ctx.lineTo(xOf(history.length - 1), pad.t + cH);
+  ctx.lineTo(xOf(0), pad.t + cH);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#00e5ff';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.moveTo(xOf(0), yOf(history[0].uptime));
+  for (let i = 1; i < history.length; i++) ctx.lineTo(xOf(i), yOf(history[i].uptime));
+  ctx.stroke();
+
+  // Dots
+  for (let i = 0; i < history.length; i++) {
+    ctx.beginPath();
+    ctx.arc(xOf(i), yOf(history[i].uptime), 3, 0, Math.PI * 2);
+    ctx.fillStyle = history[i].ok ? '#69ff47' : '#ff5252';
+    ctx.fill();
+  }
+
+  // Y-axis labels
+  ctx.fillStyle = '#555';
+  ctx.font = '11px monospace';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const val = Math.round((maxU / 4) * (4 - i));
+    ctx.fillText(val + 's', pad.l - 4, pad.t + (cH / 4) * i + 4);
+  }
+}
+
+/* ── health fetch ── */
+async function fetchHealth() {
+  try {
+    const res = await fetch('/health');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+
+    const uptimeSec = parseInt(d.uptime) || 0;
+    const isOk = d.status === 'ok';
+
+    history.push({ uptime: uptimeSec, ok: isOk, ts: Date.now() });
+    if (history.length > MAX_PTS) history.shift();
+
+    // Update stats
+    document.getElementById('statusVal').textContent  = isOk ? 'ONLINE' : 'DOWN';
+    document.getElementById('statusVal').className    = 'value ' + (isOk ? 'ok' : 'error');
+    document.getElementById('uptimeVal').textContent  = formatUptime(uptimeSec);
+    document.getElementById('restartVal').textContent = d.restarts ?? '—';
+    document.getElementById('restartVal').className   = 'value ' + (d.restarts > 0 ? 'warn' : 'ok');
+    document.getElementById('hbVal').textContent      = d.lastHeartbeat || '—';
+
+    // Live dot
+    document.getElementById('liveDot').className  = 'dot ' + (isOk ? 'green' : 'red');
+    document.getElementById('liveLabel').textContent = isOk ? 'Live' : 'Bot down';
+
+    drawChart();
+  } catch (e) {
+    document.getElementById('liveLabel').textContent = 'Error: ' + e.message;
+    document.getElementById('liveDot').className = 'dot red';
+  }
+}
+
+function formatUptime(sec) {
+  if (sec < 60) return sec + 's';
+  if (sec < 3600) return Math.floor(sec / 60) + 'm ' + (sec % 60) + 's';
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  return h + 'h ' + m + 'm';
+}
+
+// Init
+fetchHealth();
+setInterval(fetchHealth, 30000);
+
+// BUG FIX: Audio autoplay blocked in modern browsers — use click fallback only, no errors
+const audio = document.createElement('audio');
+audio.loop = true;
+audio.src = 'https://raw.githubusercontent.com/SAGOR-KINGx/SaGor/main/SaGor.mp3';
+document.body.addEventListener('click', () => { audio.play().catch(() => {}); }, { once: true });
+</script>
+</body>
+</html>
