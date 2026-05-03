@@ -159,19 +159,12 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         }, messageID);
 
       // Permission check
-      // FIX: threadInfoo null safety
-      let threadInfoo;
-      try {
-        threadInfoo = threadInfo.get(threadID) || await Threads.getInfo(threadID);
-      } catch (_) { threadInfoo = { adminIDs: [] }; }
-      if (!threadInfoo) threadInfoo = { adminIDs: [] };
-      if (!Array.isArray(threadInfoo.adminIDs)) threadInfoo.adminIDs = [];
-
-      const find = threadInfoo.adminIDs.find(el => el.id == senderID);
+      // Reuse already-fetched threadInf (no duplicate API call)
+      const find = threadInf.adminIDs.find(el => el.id == senderID);
       let permssion = 0;
-      if (NDH.includes(senderID.toString())) permssion = 2;
       if (ADMINBOT.includes(senderID.toString())) permssion = 3;
-      else if (!ADMINBOT.includes(senderID) && !NDH.includes(senderID) && find) permssion = 1;
+      else if (NDH.includes(senderID.toString())) permssion = 2;
+      else if (find) permssion = 1;
 
       if ((command.config.hasPermssion || 0) > permssion)
         return api.sendMessage(global.getText("handleCommand", "permssionNotEnough", command.config.name), event.threadID, event.messageID);
