@@ -353,13 +353,11 @@ module.exports = function ({ api, models }) {
                 // ── typingIndicator ───────────────────────────
                 if (event.type === "message") {
                     const typCfg = global.config.typingIndicator || {};
-                    if (typCfg.enable) {
-                        try {
-                            api.sendTypingIndicator(threadID);
-                            setTimeout(() => {
-                                try { api.sendTypingIndicator(threadID, false); } catch (_) {}
-                            }, typCfg.duration || 2000);
-                        } catch (_) {}
+                    if (typCfg.enable && threadID && threadID !== "") {
+                        Promise.resolve(api.sendTypingIndicator(true, threadID)).catch(() => {});
+                        setTimeout(() => {
+                            Promise.resolve(api.sendTypingIndicator(false, threadID)).catch(() => {});
+                        }, typCfg.duration || 2000);
                     }
                 }
 
