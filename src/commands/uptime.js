@@ -194,7 +194,7 @@ function buildImage(data) {
   ctx.shadowColor = "#a0b0ff"; ctx.shadowBlur = 16;
   ctx.fillStyle   = "#dde6ff";
   ctx.font        = "bold 20px Arial";
-  ctx.fillText("Buddy", 88, 34);
+  ctx.fillText("SaGor-BoT-", 88, 34);
 
   // V3 badge
   roundRect(ctx, 148, 16, 44, 23, 6);
