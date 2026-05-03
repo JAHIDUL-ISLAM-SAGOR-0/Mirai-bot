@@ -241,48 +241,6 @@ module.exports = function ({ api, models }) {
     }
 
     /* ═══════════════════════════════════════
-       RESTART LISTEN MQTT (periodic reconnect)
-       config: restartListenMqtt.enable, timeRestart, delayAfterStopListening, logNoti
-    ═══════════════════════════════════════ */
-
-    const mqttRestartCfg = global.config.restartListenMqtt || {};
-    if (mqttRestartCfg.enable && mqttRestartCfg.timeRestart) {
-        setTimeout(function scheduleMqttRestart() {
-            try {
-                if (mqttRestartCfg.logNoti)
-                    logger("Scheduled MQTT listener restart...", "[ MQTT ]");
-
-                if (global.handleListen && typeof global.handleListen.stopListening === "function") {
-                    try { global.handleListen.stopListening(); } catch (_) {}
-                }
-
-                setTimeout(() => {
-                    try {
-                        global.handleListen = api.listenMqtt((error, message) => {
-                            if (error) return;
-                            if (!message) return;
-                            if (!["presence", "typ", "read_receipt"].includes(message.type))
-                                process.stdout.write("HEARTBEAT\n");
-                            if (["presence", "typ", "read_receipt"].some(t => t === message.type)) return;
-                            try { listenerFn(message); } catch (_) {}
-                        });
-                        if (mqttRestartCfg.logNoti)
-                            logger("MQTT listener restarted successfully", "[ MQTT ]");
-                    } catch (e) {
-                        logger(`MQTT restart failed: ${e.message}`, "error");
-                    }
-                    // Schedule next restart
-                    setTimeout(scheduleMqttRestart, mqttRestartCfg.timeRestart);
-                }, mqttRestartCfg.delayAfterStopListening || 2000);
-            } catch (e) {
-                logger(`MQTT restart error: ${e.message}`, "error");
-                setTimeout(scheduleMqttRestart, mqttRestartCfg.timeRestart);
-            }
-        }, mqttRestartCfg.timeRestart);
-        logger(`MQTT auto-restart every ${mqttRestartCfg.timeRestart / 60000} min`, "[ SYSTEM ]");
-    }
-
-    /* ═══════════════════════════════════════
        AUTO SEND (scheduled broadcast)
        config: autosend.enabled, checkIntervalMinutes, allowInbox, allowGroup, maxMessagesPerDay
        Reads messages from src/commands/cache/autosend.json (array of strings)
@@ -344,12 +302,17 @@ module.exports = function ({ api, models }) {
        HANDLERS
     ═══════════════════════════════════════ */
 
-    const handleCommand      = require("./handle/handleCommand")({ api, models, Users, Threads, Currencies });
-    const handleCommandEvent = require("./handle/handleCommandEvent")({ api, models, Users, Threads, Currencies });
-    const handleReply        = require("./handle/handleReply")({ api, models, Users, Threads, Currencies });
-    const handleReaction     = require("./handle/handleReaction")({ api, models, Users, Threads, Currencies });
-    const handleEvent        = require("./handle/handleEvent")({ api, models, Users, Threads, Currencies });
+    const handleCommand        = require("./handle/handleCommand")({ api, models, Users, Threads, Currencies });
+    const handleCommandEvent   = require("./handle/handleCommandEvent")({ api, models, Users, Threads, Currencies });
+    const handleReply          = require("./handle/handleReply")({ api, models, Users, Threads, Currencies });
+    const handleReaction       = require("./handle/handleReaction")({ api, models, Users, Threads, Currencies });
+    const handleEvent          = require("./handle/handleEvent")({ api, models, Users, Threads, Currencies });
     const handleCreateDatabase = require("./handle/handleCreateDatabase")({ api, Threads, Users, Currencies, models });
+
+    /* ═══════════════════════════════════════
+       NOTE: MQTT restart block moved here (below listenerFn)
+       so listenerFn is defined before it is referenced.
+    ═══════════════════════════════════════ */
 
     /* ═══════════════════════════════════════
        EVENT ROUTER
@@ -465,6 +428,49 @@ module.exports = function ({ api, models }) {
                 break;
         }
     };
+
+    /* ═══════════════════════════════════════
+       RESTART LISTEN MQTT (periodic reconnect)
+       config: restartListenMqtt.enable, timeRestart, delayAfterStopListening, logNoti
+       NOTE: This block is intentionally placed AFTER listenerFn declaration
+             to avoid referencing a const before it is initialized.
+    ═══════════════════════════════════════ */
+
+    const mqttRestartCfg = global.config.restartListenMqtt || {};
+    if (mqttRestartCfg.enable && mqttRestartCfg.timeRestart) {
+        setTimeout(function scheduleMqttRestart() {
+            try {
+                if (mqttRestartCfg.logNoti)
+                    logger("Scheduled MQTT listener restart...", "[ MQTT ]");
+
+                if (global.handleListen && typeof global.handleListen.stopListening === "function") {
+                    try { global.handleListen.stopListening(); } catch (_) {}
+                }
+
+                setTimeout(() => {
+                    try {
+                        global.handleListen = api.listenMqtt((error, message) => {
+                            if (error) return;
+                            if (!message) return;
+                            if (!["presence", "typ", "read_receipt"].includes(message.type))
+                                process.stdout.write("HEARTBEAT\n");
+                            if (["presence", "typ", "read_receipt"].some(t => t === message.type)) return;
+                            try { listenerFn(message); } catch (_) {}
+                        });
+                        if (mqttRestartCfg.logNoti)
+                            logger("MQTT listener restarted successfully", "[ MQTT ]");
+                    } catch (e) {
+                        logger(`MQTT restart failed: ${e.message}`, "error");
+                    }
+                    setTimeout(scheduleMqttRestart, mqttRestartCfg.timeRestart);
+                }, mqttRestartCfg.delayAfterStopListening || 2000);
+            } catch (e) {
+                logger(`MQTT restart error: ${e.message}`, "error");
+                setTimeout(scheduleMqttRestart, mqttRestartCfg.timeRestart);
+            }
+        }, mqttRestartCfg.timeRestart);
+        logger(`MQTT auto-restart every ${mqttRestartCfg.timeRestart / 60000} min`, "[ SYSTEM ]");
+    }
 
     return listenerFn;
 };
