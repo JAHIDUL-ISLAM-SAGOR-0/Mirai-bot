@@ -1,14 +1,14 @@
 const os = require("os");
 
 module.exports.config = {
- name: "uptime",
+ name: "up2",
  version: "4.1.0",
  hasPermssion: 0,
  credits: "SaGor",
  description: "System status with counters",
  commandCategory: "system",
  cooldowns: 5,
- aliases: ["upt","up"]
+ aliases: []
 };
 
 module.exports.run = async function({ api, event }) {
