@@ -1,4 +1,4 @@
-Cmd install up.js const os = require("os");
+const os = require("os");
 const { createCanvas } = require("canvas");
 const fs = require("fs");
 const path = require("path");
@@ -13,6 +13,10 @@ module.exports.config = {
   cooldowns: 5,
   aliases: ["upt", "up"]
 };
+
+/* ═══════════════════════════════════════════
+   HELPER FUNCTIONS
+═══════════════════════════════════════════ */
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -34,6 +38,7 @@ function drawRing(ctx, cx, cy, radius, pct, colorStart, colorEnd, label, valueSt
   const end   = Math.PI / 2 + Math.PI * 2 - gap / 2;
   const fill  = start + (end - start) * (Math.min(pct, 100) / 100);
 
+  // track
   ctx.save();
   ctx.beginPath();
   ctx.arc(cx, cy, radius, start, end);
@@ -42,6 +47,7 @@ function drawRing(ctx, cx, cy, radius, pct, colorStart, colorEnd, label, valueSt
   ctx.lineCap     = "round";
   ctx.stroke();
 
+  // filled arc
   const grad = ctx.createLinearGradient(cx - radius, cy, cx + radius, cy);
   grad.addColorStop(0, colorStart);
   grad.addColorStop(1, colorEnd);
@@ -54,6 +60,7 @@ function drawRing(ctx, cx, cy, radius, pct, colorStart, colorEnd, label, valueSt
   ctx.shadowBlur  = 22;
   ctx.stroke();
 
+  // tip dot
   const dx = cx + Math.cos(fill) * radius;
   const dy = cy + Math.sin(fill) * radius;
   ctx.beginPath();
@@ -64,6 +71,7 @@ function drawRing(ctx, cx, cy, radius, pct, colorStart, colorEnd, label, valueSt
   ctx.fill();
   ctx.restore();
 
+  // center value
   ctx.save();
   ctx.shadowColor = colorEnd;
   ctx.shadowBlur  = 22;
@@ -74,6 +82,7 @@ function drawRing(ctx, cx, cy, radius, pct, colorStart, colorEnd, label, valueSt
   ctx.fillText(valueStr, cx, cy);
   ctx.restore();
 
+  // label
   ctx.save();
   ctx.fillStyle = "rgba(180,210,255,0.55)";
   ctx.font      = "bold 11px Arial";
@@ -103,6 +112,7 @@ function drawSparkLine(ctx, x, y, w, h, pct, color) {
     i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
   });
   ctx.stroke();
+  // fill glow
   ctx.globalAlpha = 0.10;
   ctx.fillStyle   = color;
   ctx.lineTo(x + w, y + h);
@@ -138,17 +148,23 @@ function drawCircuitLines(ctx, W, H) {
   ctx.restore();
 }
 
+/* ═══════════════════════════════════════════
+   MAIN IMAGE BUILDER
+═══════════════════════════════════════════ */
+
 function buildImage(data) {
   const W = 780, H = 490;
   const canvas = createCanvas(W, H);
   const ctx    = canvas.getContext("2d");
 
+  /* ── Background ── */
   const bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.85);
   bg.addColorStop(0, "#0d1220");
   bg.addColorStop(1, "#060810");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
+  /* grid */
   ctx.save();
   ctx.strokeStyle = "rgba(0,255,231,0.022)";
   ctx.lineWidth   = 0.5;
@@ -158,6 +174,7 @@ function buildImage(data) {
 
   drawCircuitLines(ctx, W, H);
 
+  /* ── Title Bar ── */
   const tg = ctx.createLinearGradient(0, 0, W, 0);
   tg.addColorStop(0, "rgba(0,255,231,0.16)");
   tg.addColorStop(1, "rgba(168,85,247,0.08)");
@@ -167,16 +184,19 @@ function buildImage(data) {
   ctx.strokeStyle = "rgba(0,255,231,0.25)"; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(0, 54); ctx.lineTo(W, 54); ctx.stroke();
 
+  // dots
   [{ c: "#ff5f56", x: 22 }, { c: "#ffbd2e", x: 44 }, { c: "#27c93f", x: 66 }].forEach(d => {
     ctx.beginPath(); ctx.arc(d.x, 27, 7, 0, Math.PI * 2);
     ctx.fillStyle = d.c; ctx.shadowColor = d.c; ctx.shadowBlur = 12; ctx.fill();
   });
 
+  // "Buddy"
   ctx.shadowColor = "#a0b0ff"; ctx.shadowBlur = 16;
   ctx.fillStyle   = "#dde6ff";
   ctx.font        = "bold 20px Arial";
-  ctx.fillText("SaGor-BoT-", 88, 34);
+  ctx.fillText("Buddy", 88, 34);
 
+  // V3 badge
   roundRect(ctx, 148, 16, 44, 23, 6);
   ctx.fillStyle = "rgba(0,255,231,0.12)"; ctx.fill();
   ctx.strokeStyle = "rgba(0,255,231,0.45)"; ctx.lineWidth = 1; ctx.stroke();
@@ -184,6 +204,7 @@ function buildImage(data) {
   ctx.fillStyle   = "#00ffe7"; ctx.font = "bold 11px Arial";
   ctx.textAlign   = "center"; ctx.fillText("V3", 170, 32); ctx.textAlign = "left";
 
+  // date + time
   ctx.shadowBlur  = 0;
   ctx.fillStyle   = "rgba(0,220,255,0.85)";
   ctx.font        = "13px Arial";
@@ -192,12 +213,14 @@ function buildImage(data) {
   ctx.textAlign   = "left";
   ctx.restore();
 
+  /* ── "overview" heading ── */
   ctx.save();
   ctx.shadowColor = "rgba(0,255,231,0.5)"; ctx.shadowBlur = 22;
   ctx.fillStyle   = "rgba(240,248,255,0.92)";
   ctx.font        = "bold 30px Arial";
   ctx.fillText("overview", 22, 98);
 
+  // ALL SYSTEM RUNNING pill
   roundRect(ctx, 168, 76, 238, 27, 13);
   ctx.fillStyle = "rgba(0,180,90,0.12)"; ctx.fill();
   ctx.strokeStyle = "rgba(0,255,100,0.4)"; ctx.lineWidth = 1; ctx.stroke();
@@ -207,6 +230,7 @@ function buildImage(data) {
   ctx.fillText("ALL SYSTEM RUNNING ✓", 193, 93);
   ctx.restore();
 
+  /* ── Info Cards ── */
   const infoCards = [
     { label: "HOSTNAME",   value: data.hostname,  color: "#00ffe7", x: 22  },
     { label: "OS / ARCH",  value: data.osArch,    color: "#44aaff", x: 214 },
@@ -226,6 +250,7 @@ function buildImage(data) {
     ctx.shadowColor = c.color; ctx.shadowBlur = 12;
     ctx.fillStyle   = c.color;
     ctx.font        = "bold 14px Arial";
+    // truncate if too long
     let txt = c.value;
     ctx.save();
     ctx.beginPath(); ctx.rect(c.x + 8, 130, 162, 22); ctx.clip();
@@ -234,6 +259,7 @@ function buildImage(data) {
     ctx.restore();
   });
 
+  /* ── Rings ── */
   const rings = [
     { cx: 80,  cy: 262, pct: data.cpuPct,  cs: "#00ff88", ce: "#00ffe7", lbl: "CPU",    val: data.cpuPct  + "%" },
     { cx: 225, cy: 262, pct: data.memPct,  cs: "#aa44ff", ce: "#dd88ff", lbl: "MEMORY", val: data.memPct  + "%" },
@@ -250,6 +276,7 @@ function buildImage(data) {
     drawRing(ctx, r.cx, r.cy, 54, r.pct, r.cs, r.ce, r.lbl, r.val);
   });
 
+  /* ── System Details Panel ── */
   ctx.save();
   roundRect(ctx, 448, 175, 312, 148, 10);
   const dpg = ctx.createLinearGradient(448, 175, 760, 323);
@@ -287,6 +314,7 @@ function buildImage(data) {
   ctx.textAlign = "left";
   ctx.restore();
 
+  /* ── Live Resource Trend ── */
   ctx.save();
   roundRect(ctx, 22, 333, 736, 122, 10);
   ctx.fillStyle = "rgba(0,0,0,0.38)"; ctx.fill();
@@ -296,6 +324,7 @@ function buildImage(data) {
   ctx.font      = "bold 9px Arial";
   ctx.fillText("LIVE RESOURCE TREND", 38, 353);
 
+  // legend
   [
     { c: "#00ff88", l: `CPU ${data.cpuPct}%`,   x: 460 },
     { c: "#cc66ff", l: `MEMORY ${data.memPct}%`, x: 545 },
@@ -313,6 +342,7 @@ function buildImage(data) {
   drawSparkLine(ctx, 38, 358, 714, 82, data.diskPct, "#ff5555");
   ctx.restore();
 
+  /* ── Status Bar ── */
   ctx.save();
   ctx.fillStyle   = "#00ff88";
   ctx.shadowColor = "#00ff88"; ctx.shadowBlur = 10;
@@ -332,8 +362,13 @@ function buildImage(data) {
   return canvas.toBuffer("image/png");
 }
 
+/* ═══════════════════════════════════════════
+   COMMAND ENTRY
+═══════════════════════════════════════════ */
+
 module.exports.run = async function ({ api, event }) {
   try {
+    /* ── Collect system data ── */
     const upSec    = process.uptime();
     const days     = Math.floor(upSec / 86400);
     const hours    = Math.floor((upSec % 86400) / 3600);
@@ -348,6 +383,7 @@ module.exports.run = async function ({ api, event }) {
     const usedMem  = totalMem - freeMem;
     const memPct   = Math.round((usedMem / totalMem) * 100);
 
+    // Disk — simple estimate via os if diskusage not installed
     let diskPct = 46;
     try {
       const { execSync } = require("child_process");
@@ -355,6 +391,7 @@ module.exports.run = async function ({ api, event }) {
       diskPct = parseInt(dfOut.replace("%", "")) || 46;
     } catch (_) {}
 
+    // CPU usage (1-second sample)
     const cpuPct = await new Promise(resolve => {
       const cpus1 = os.cpus();
       setTimeout(() => {
@@ -395,13 +432,14 @@ module.exports.run = async function ({ api, event }) {
       diskPct,
       nodeVer:   process.version,
       cores:     String(cores),
-      temp:      "N/A",           
+      temp:      "N/A",           // Node.js cannot read temp natively; replace if you have a lib
       loadAvg,
-      users:     "—",            
+      users:     "—",            // replace with your bot's user count if available
       dateStr,
       timeStr,
     };
 
+    /* ── Build image ── */
     const imgBuffer = buildImage(data);
     const tmpPath   = path.join(__dirname, `uptime_${Date.now()}.png`);
     fs.writeFileSync(tmpPath, imgBuffer);
@@ -409,14 +447,14 @@ module.exports.run = async function ({ api, event }) {
     await api.sendMessage(
       { attachment: fs.createReadStream(tmpPath) },
       event.threadID,
-      () => fs.unlinkSync(tmpPath),   
+      () => fs.unlinkSync(tmpPath),   // delete temp file after send
       event.messageID
     );
 
   } catch (err) {
     console.error("[uptime]", err);
     return api.sendMessage(
-      `Error generating status image:\n${err.message}`,
+      `❌ Error generating status image:\n${err.message}`,
       event.threadID,
       event.messageID
     );
