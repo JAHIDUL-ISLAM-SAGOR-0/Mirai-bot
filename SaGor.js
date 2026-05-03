@@ -530,7 +530,10 @@ function onBot({ models: botModel }) {
 })();
 
 process.on('unhandledRejection', (err) => {
-    if (err) logger(`Unhandled Rejection: ${err && (err.message || err)}`, '[ ERROR ]');
+    if (err) {
+        logger(`Unhandled Rejection: ${err && (err.message || err)}`, '[ ERROR ]');
+        if (err && err.stack) logger(`Stack: ${err.stack}`, '[ ERROR ]');
+    }
 });
 
 process.on('uncaughtException', (err) => {
