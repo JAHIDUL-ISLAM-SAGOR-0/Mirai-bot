@@ -414,10 +414,10 @@ function onBot({ models: botModel }) {
             }
         }
 
-        let mqttHandle;
         function startMqtt() {
             try {
-                mqttHandle = loginApiData.listenMqtt(listenerCallback);
+                const mqttHandle = loginApiData.listenMqtt(listenerCallback);
+                global.handleListen = mqttHandle; // FIX: assign inside success path, not after async call
             } catch (mqttErr) {
                 logger(`MQTT start failed: ${mqttErr.message}. Retrying in 30s...`, '[ ERROR ]');
                 sendMqttErrorNotification(`MQTT start failed: ${mqttErr.message}`).catch(() => {});
@@ -430,9 +430,8 @@ function onBot({ models: botModel }) {
             }
         }
         startMqtt();
-        global.handleListen = mqttHandle;
 
-        setInterval(() => { process.stdout.write('❤️‍🩹=HEARTBEAT=❤️‍🩹\n'); }, 2 * 60 * 1000);
+        setInterval(() => { process.stdout.write('HEARTBEAT\n'); }, 2 * 60 * 1000);
 
         setInterval(() => {
             try {
@@ -472,9 +471,6 @@ function onBot({ models: botModel }) {
         }
 
        if (global.config.autoRestartWhenListenMqttError === true) {
-            
-            const _origSendNoti = sendMqttErrorNotification;
-            
             global._autoRestartOnMqttError = true;
             logger("autoRestartWhenListenMqttError enabled", "[ SYSTEM ]");
         }
