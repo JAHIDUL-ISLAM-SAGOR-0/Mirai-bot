@@ -1,12 +1,12 @@
 <div align="center">
-  <h1> MIRAI V3 </h1>
+  <h1> MIRAI V5 </h1>
   <p>🤖 Fully automated Messenger bot with AI, and advanced group management!</p>
   <img src="https://i.imgur.com/XLSPFgc.jpeg" alt="meow" width="400"/>
 </div>
 
 ---
 
-## 🚀 LIVE HOSTS 🌟
+## LIVE HOSTS 🌟
 <p align="center">
 <a href="https://render.com/"><img src="https://img.shields.io/badge/Render-ONLINE-ff2d55?style=for-the-badge&logo=render&logoColor=white" /></a>
 <a href="https://railway.app/"><img src="https://img.shields.io/badge/Railway-ONLINE-0099ff?style=for-the-badge&logo=railway&logoColor=white" /></a>
@@ -25,7 +25,7 @@
 
 ---
 
-## 🔗 SOCIAL MEDIA 🌐
+## SOCIAL MEDIA 🌐
 <p align="center">
 <a href="https://facebook.com/SAGOR.69x"><img src="https://img.shields.io/badge/Facebook-💙?style=for-the-badge&logo=facebook" /></a>
 <a href="https://github.com/SAGOR-KINGx"><img src="https://img.shields.io/badge/GitHub-⚫?style=for-the-badge&logo=github" /></a>
@@ -66,7 +66,7 @@ jobs:
     - run: npm start
 ```
 
-## 📸 LIVE 
+## LIVE 
 [![Bot Screenshot](https://i.imgur.com/iC5LGpU.jpeg)](https://imgur.com/YourPhotoID)
 
 ---
