@@ -78,7 +78,6 @@ app.get("/dashboard/gencode", (req, res) => {
   res.json({ code, expiresIn: ((config.dashBoard && config.dashBoard.expireVerifyCode) || 300000) / 1000 + "s" });
 });
 
-// Verify code → returns session token
 app.get("/dashboard/verify", (req, res) => {
   if (!isDashboardEnabled()) return res.status(403).json({ error: "Dashboard disabled" });
   const { code } = req.query;
