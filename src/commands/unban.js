@@ -1,11 +1,11 @@
 module.exports.config = {
   name: "unban",
-  version: "2.0.0",
+  version: "2.1.0",
   hasPermssion: 2,
   credits: "SaGor",
   description: "Unban users banned by spamban or manual ban system",
   commandCategory: "Admin",
-  usages: "unban [id | @tag | reply] | unban alluser | unban box | unban allbox",
+  usages: "unban [id | @tag | reply] | unban alluser | unban box | unban allbox | unban ata",
   cooldowns: 2,
   denpendencies: {}
 };
@@ -34,11 +34,8 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
     await Users.setData(uid, { data });
     global.data.userBanned.delete(uid);
 
-    // Also clear spamProtection in-memory ban if present
     if (global.spamBanned && global.spamBanned.has(uid)) global.spamBanned.delete(uid);
     if (global.spamTracker && global.spamTracker.has(uid)) global.spamTracker.delete(uid);
-
-    // Clear autoban tracker from spamban.js
     if (global.client.autoban && global.client.autoban[uid]) {
       global.client.autoban[uid] = { timeStart: Date.now(), number: 0 };
     }
@@ -47,6 +44,59 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
   }
 
   switch (args[0]) {
+
+    // ══════════════════════════════════════════════
+    //  unban ata  →  unban EVERYTHING at once
+    // ══════════════════════════════════════════════
+    case "ata": {
+      let userCount   = 0;
+      let threadCount = 0;
+
+      // 1) Unban all banned users
+      const userBanned = [...(global.data.userBanned || new Map()).keys()];
+      for (const uid of userBanned) {
+        await unbanUser(uid);
+        userCount++;
+      }
+
+      // 2) Unban all banned threads/groups
+      const threadBanned = global.data.threadBanned
+        ? [...global.data.threadBanned.keys()]
+        : [];
+      for (const tid of threadBanned) {
+        const data = (await Threads.getData(tid)).data || {};
+        data.banned   = false;
+        data.reason   = null;
+        data.dateAdded = null;
+        await Threads.setData(tid, { data });
+        global.data.threadBanned.delete(tid);
+        threadCount++;
+      }
+
+      // 3) Also clear group-level bans from ban.js cache if it exists
+      const fs = require("fs-extra");
+      const bansPath = __dirname + "/cache/bans.json";
+      if (fs.existsSync(bansPath)) {
+        const bans = JSON.parse(fs.readFileSync(bansPath));
+        let groupBanCount = 0;
+        for (const tid in bans.banned) {
+          groupBanCount += (bans.banned[tid] || []).length;
+          bans.banned[tid] = [];
+          bans.warns[tid]  = {};
+        }
+        fs.writeFileSync(bansPath, JSON.stringify(bans, null, 2));
+        userCount += groupBanCount;
+      }
+
+      return api.sendMessage(
+        `「 𝗨𝗡𝗕𝗔𝗡 𝗔𝗧𝗔 」\n` +
+        `◆━━━━━━━━━━━━━━━━━◆\n\n` +
+        `✅ Unbanned ${userCount} user(s)\n` +
+        `✅ Unbanned ${threadCount} group(s)\n\n` +
+        `🔓 All bans have been cleared!`,
+        threadID, messageID
+      );
+    }
 
     // ── Unban by ID directly ──
     case "id": {
@@ -60,13 +110,11 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
     case "user":
     case "mb":
     case "member": {
-      // reply
       if (event.type === "message_reply") {
         const uid = event.messageReply.senderID;
         const name = await unbanUser(uid);
         return api.sendMessage(`✅ Unbanned: ${name} (${uid})`, threadID, messageID);
       }
-      // @mention
       if (Object.keys(event.mentions).length > 0) {
         const names = [];
         for (const uid of Object.keys(event.mentions)) {
@@ -75,7 +123,6 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
         }
         return api.sendMessage(`✅ Unbanned:\n${names.join("\n")}`, threadID, messageID);
       }
-      // ID as second arg
       if (args[1]) {
         const name = await unbanUser(args[1]);
         return api.sendMessage(`✅ Unbanned: ${name} (${args[1]})`, threadID, messageID);
@@ -118,15 +165,13 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
       return api.sendMessage(`✅ Unbanned all ${threadBanned.length} group(s).`, threadID, messageID);
     }
 
-    // ── Default: show help OR handle reply/mention without subcommand ──
+    // ── Default: auto-detect reply / mention / raw ID ──
     default: {
-      // If replying to a message without subcommand → auto unban
       if (event.type === "message_reply") {
         const uid = event.messageReply.senderID;
         const name = await unbanUser(uid);
         return api.sendMessage(`✅ Unbanned: ${name} (${uid})`, threadID, messageID);
       }
-      // If @mention without subcommand → auto unban
       if (Object.keys(event.mentions).length > 0) {
         const names = [];
         for (const uid of Object.keys(event.mentions)) {
@@ -135,7 +180,6 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
         }
         return api.sendMessage(`✅ Unbanned:\n${names.join("\n")}`, threadID, messageID);
       }
-      // If raw ID without subcommand
       if (args[0] && /^\d+$/.test(args[0])) {
         const name = await unbanUser(args[0]);
         return api.sendMessage(`✅ Unbanned: ${name} (${args[0]})`, threadID, messageID);
@@ -149,7 +193,8 @@ module.exports.run = async ({ event, api, Users, Threads, args }) => {
         `▸ ${prefix}unban member @tag\n  → Unban tagged user\n\n` +
         `▸ ${prefix}unban alluser\n  → Unban all users on server\n\n` +
         `▸ ${prefix}unban box\n  → Unban this group\n\n` +
-        `▸ ${prefix}unban allbox\n  → Unban all groups`,
+        `▸ ${prefix}unban allbox\n  → Unban all groups\n\n` +
+        `▸ ${prefix}unban ata\n  → 🔓 Unban EVERYTHING at once`,
         threadID, messageID
       );
     }
