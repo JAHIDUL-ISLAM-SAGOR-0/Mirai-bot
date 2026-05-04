@@ -3,7 +3,6 @@ const axios  = require("axios");
 const logger = require("./utils/log");
 const config = require("./config.json");
 
-// ✅ FIX 1: keep_alive চালু করো (আগে import করা ছিল না)
 require("./keep_alive");
 
 const REMOTE_CONFIG_URL =
@@ -187,7 +186,7 @@ if (SELF_URL) {
   }, 4 * 60 * 1000);
   logger(`24/7 self-ping enabled → ${pingUrl}`, "[ UPTIME ]");
 } else {
-  logger("⚠️ Self-ping disabled — env এ APP_URL সেট করো! (যেমন: https://your-bot.onrender.com)", "[ UPTIME ]");
+  logger("⚠️ Self-ping disabled — env এ APP_URL  ( https://your-bot.onrender.com)", "[ UPTIME ]");
 }
 
 app.listen(port, "0.0.0.0", () => {
